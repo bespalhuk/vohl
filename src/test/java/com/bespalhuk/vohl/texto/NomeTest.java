@@ -1,6 +1,7 @@
 package com.bespalhuk.vohl.texto;
 
 import com.bespalhuk.vohl.ContractTester;
+import com.google.common.collect.ImmutableList;
 import org.testng.annotations.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -29,7 +30,9 @@ public class NomeTest {
 
 	@Test
 	public void equals() {
-		ContractTester.test(Nome.of(" Bespalhuk "), Nome.of("Bespalhuk"), Nome.of("Ricardo"));
+		ContractTester.test(Nome.of(" Ricardo  Bespalhuk "),
+				ImmutableList.builder().add(Nome.of("Ricardo Bespalhuk")).build(),
+				ImmutableList.builder().add(Nome.of("Bespalhuk")).build());
 	}
 
 }

@@ -1,8 +1,8 @@
 package com.bespalhuk.vohl.texto.modify;
 
-public class Normalizer implements Modifier {
+public class Normalize implements Modifier {
 
-	Normalizer() {
+	Normalize() {
 	}
 
 	@Override

@@ -1,8 +1,8 @@
 package com.bespalhuk.vohl.texto.modify;
 
-public class Spaces implements Modifier {
+public class SingleSpaces implements Modifier {
 
-	Spaces() {
+	SingleSpaces() {
 	}
 
 	@Override

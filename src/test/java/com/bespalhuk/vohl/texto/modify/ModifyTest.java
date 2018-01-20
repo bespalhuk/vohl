@@ -7,23 +7,27 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class ModifyTest {
 
+	private static final String value = " «Ricardo  Bêspálhük» ";
+
 	@Test
 	public void cases() {
-		String name = "  «Ricardo  Bêspálhük»  ";
-		assertThat(Modify.of(upperCase(), lowerCase()).modify(name)).isEqualTo("  «ricardo  bêspálhük»  ");
-		assertThat(Modify.of(lowerCase(), upperCase()).modify(name)).isEqualTo("  «RICARDO  BÊSPÁLHÜK»  ");
+		assertThat(Modify.of(upperCase(), lowerCase()).modify(value)).isEqualTo(" «ricardo  bêspálhük» ");
+		assertThat(Modify.of(lowerCase(), upperCase()).modify(value)).isEqualTo(" «RICARDO  BÊSPÁLHÜK» ");
 	}
 
 	@Test
 	public void whiteSpaces() {
-		String name = "  «Ricardo  Bêspálhük»  ";
-		assertThat(Modify.of(spaces(), trim()).modify(name)).isEqualTo("«Ricardo Bêspálhük»");
+		assertThat(Modify.of(singleSpaces(), trim()).modify(value)).isEqualTo("«Ricardo Bêspálhük»");
 	}
 
 	@Test
 	public void normalizer() {
-		String name = "  «Ricardo  Bêspálhük»  ";
-		assertThat(Modify.of(normalize()).modify(name)).isEqualTo("Ricardo Bespalhuk");
+		assertThat(Modify.of(normalize()).modify(value)).isEqualTo("Ricardo Bespalhuk");
+	}
+
+	@Test
+	public void separator() {
+		assertThat(Modify.of(unseparate()).modify(value)).isEqualTo("«RicardoBêspálhük»");
 	}
 
 }

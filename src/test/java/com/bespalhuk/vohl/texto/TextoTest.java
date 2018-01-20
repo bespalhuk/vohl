@@ -6,7 +6,6 @@ import com.google.common.collect.ImmutableList;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.regex.Pattern;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -21,8 +20,7 @@ public class TextoTest {
 	}
 
 	@Test
-	public void builderConstructor()
-			throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+	public void builderConstructor() {
 		assertThat(Texto.Builder.class.getDeclaredConstructors().length).isEqualTo(2);
 	}
 
@@ -73,23 +71,23 @@ public class TextoTest {
 	}
 
 	@Test
-	public void validMatchRegex() {
+	public void validMatches() {
 		texto.matches("\\w+");
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void invalidMatchRegex() {
-		texto.matches("\\d+");
+	public void invalidMatches() {
+		texto.matches("\\W+");
 	}
 
 	@Test
-	public void validMatchPattern() {
-		texto.matches(ImmutableList.of(Pattern.compile("\\w+"), Pattern.compile("\\d+")));
+	public void validMatchesAny() {
+		texto.matchesAny(ImmutableList.of(Pattern.compile("\\w+"), Pattern.compile("\\W+")));
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void invalidMatchPattern() {
-		texto.matches(ImmutableList.of(Pattern.compile("\\s+"), Pattern.compile("\\d+")));
+	public void invalidMatchesAny() {
+		texto.matchesAny(ImmutableList.of(Pattern.compile("\\s+"), Pattern.compile("\\W+")));
 	}
 
 	@Test
@@ -104,7 +102,9 @@ public class TextoTest {
 
 	@Test
 	public void equals() {
-		ContractTester.test(new Texto1(texto), new Texto1(texto), new Texto1(Texto.builder("Ricardo")));
+		ContractTester.test(new Texto1(texto),
+				ImmutableList.builder().add(new Texto1(texto)).build(),
+				ImmutableList.builder().add(new Texto1(Texto.builder("Ricardo"))).build());
 	}
 
 	@Test
@@ -115,7 +115,6 @@ public class TextoTest {
 	@Test
 	public void compare() {
 		Texto1 texto1 = new Texto1(texto);
-
 		assertThat(texto1.compareTo(new Texto1(Texto.builder("0")))).isEqualTo(1);
 		assertThat(texto1.compareTo(texto1)).isEqualTo(0);
 		assertThat(texto1.compareTo(new Texto1(Texto.builder("Z")))).isEqualTo(-1);

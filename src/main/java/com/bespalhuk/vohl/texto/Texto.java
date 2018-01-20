@@ -51,6 +51,7 @@ public abstract class Texto<T extends Texto<T>> implements Comparable<T>, Format
 
 	@Override
 	public int compareTo(T o) {
+		Check.notNull(o);
 		return ComparisonChain.start().compare(this.value, o.value).result();
 	}
 
@@ -73,11 +74,14 @@ public abstract class Texto<T extends Texto<T>> implements Comparable<T>, Format
 		}
 
 		public Builder modifiers(Modifier... modifiers) {
+			Check.notNull(modifiers);
 			this.value = Modify.of(modifiers).modify(value);
 			return this;
 		}
 
 		public Builder between(int min, int max) {
+			Check.notNull(min);
+			Check.notNull(max);
 			Check.argument(min <= max,
 					String.format("Mínimo (%d) deve ser inferior ou igual ao máximo (%d)", min, max));
 			min(min);
@@ -85,24 +89,28 @@ public abstract class Texto<T extends Texto<T>> implements Comparable<T>, Format
 			return this;
 		}
 
-		public Builder min(int length) {
-			Check.argument(value.length() >= length,
-					String.format("%s deve ter no mínimo %d caracteres.", value, length));
+		public Builder min(int min) {
+			Check.notNull(min);
+			Check.argument(value.length() >= min,
+					String.format("Deve ter no mínimo %d caracteres. [%s]", min, value));
 			return this;
 		}
 
-		public Builder max(int length) {
-			Check.argument(value.length() <= length,
-					String.format("%s deve ter no máximo %d caracteres.", value, length));
+		public Builder max(int max) {
+			Check.notNull(max);
+			Check.argument(value.length() <= max,
+					String.format("Deve ter no máximo %d caracteres. [%s]", max, value));
 			return this;
 		}
 
 		public Builder matches(String regex) {
+			Check.notNull(regex);
 			Check.argument(value.matches(regex), Check.Messages.DIDNT_MATCH);
 			return this;
 		}
 
-		public Builder matches(List<Pattern> patterns) {
+		public Builder matchesAny(List<Pattern> patterns) {
+			Check.notNull(patterns);
 			boolean anyMatch = patterns.stream().map(p -> p.matcher(value)).anyMatch(Matcher::find);
 			Check.argument(anyMatch, Check.Messages.DIDNT_MATCH);
 			return this;

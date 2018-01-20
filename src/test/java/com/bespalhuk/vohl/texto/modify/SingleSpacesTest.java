@@ -4,11 +4,11 @@ import org.testng.annotations.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class NormalizerTest {
+public class SingleSpacesTest {
 
 	@Test
 	public void modify() {
-		assertThat(new Normalizer().modify("  Bêspá € lhük  ")).isEqualTo("Bespa lhuk");
+		assertThat(new SingleSpaces().modify("  Ricardo  boca  Bespalhuk  ")).isEqualTo(" Ricardo boca Bespalhuk ");
 	}
 
 }

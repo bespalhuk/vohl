@@ -15,9 +15,9 @@ public class Nome extends Texto<Nome> {
 
 	public static Nome of(String value) {
 		Builder builder = Texto.builder(value)
-				.between(1, 60)
 				.matches(REGEX)
-				.modifiers(Modifier.trim())
+				.modifiers(Modifier.trim(), Modifier.singleSpaces())
+				.between(1, MAX_LENGTH)
 				.notBlank();
 		return new Nome(builder);
 	}
