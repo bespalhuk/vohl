@@ -4,18 +4,11 @@ import com.bespalhuk.vohl.ContractTester;
 import com.google.common.collect.ImmutableList;
 import org.testng.annotations.Test;
 
-import java.util.regex.Pattern;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class NumericoTest {
 
-	private Numerico.Builder<Integer> dez = Numerico.builder(10);
-
-	@Test
-	public void builderConstructor() {
-		assertThat(Numerico.Builder.class.getDeclaredConstructors().length).isEqualTo(2);
-	}
+	private static final NumericoInteger DEZ = new NumericoInteger(10);
 
 	@Test
 	public void numerify() {
@@ -35,173 +28,88 @@ public class NumericoTest {
 	}
 
 	@Test
-	public void validBetween() {
-		dez.between(5, 15);
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void invalidBetween() {
-		dez.between(15, 5);
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void invalidBetweenMin() {
-		dez.between(15, 15);
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void invalidBetweenMax() {
-		dez.between(5, 5);
-	}
-
-	@Test
-	public void validMin() {
-		dez.min(5);
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void invalidMin() {
-		dez.min(15);
-	}
-
-	@Test
-	public void validMax() {
-		dez.max(15);
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void invalidMax() {
-		dez.max(5);
-	}
-
-	@Test
-	public void validMinLength() {
-		dez.minLength(2);
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void invalidMinLength() {
-		dez.minLength(3);
-	}
-
-	@Test
-	public void validMaxLength() {
-		dez.maxLength(2);
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void invalidMaxLength() {
-		dez.maxLength(1);
-	}
-
-	@Test
-	public void validMatches() {
-		dez.matches("\\d+");
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void invalidMatches() {
-		dez.matches("\\D+");
-	}
-
-	@Test
-	public void validMatchesAny() {
-		dez.matchesAny(ImmutableList.of(Pattern.compile("\\d+"), Pattern.compile("\\D+")));
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void invalidMatchAny() {
-		dez.matchesAny(ImmutableList.of(Pattern.compile("\\s+"), Pattern.compile("\\D+")));
-	}
-
-	@Test
 	public void equals() {
-		ContractTester.test(new NumericoInteger(dez),
-				ImmutableList.builder().add(new NumericoInteger(dez)).build(),
-				ImmutableList.builder().add(new NumericoInteger(Numerico.builder(1))).build());
+		ContractTester.test(DEZ, ImmutableList.of(new NumericoInteger(10)), ImmutableList.of(new NumericoInteger(1)));
 	}
 
 	@Test
 	public void string() {
-		assertThat(new NumericoInteger(dez).toString()).isEqualTo("10");
+		assertThat(DEZ.toString()).isEqualTo("10");
 	}
 
 	@Test
 	public void compare() {
-		NumericoInteger numerico = new NumericoInteger(this.dez);
-		assertThat(numerico.compareTo(new NumericoInteger(Numerico.builder(5)))).isEqualTo(1);
-		assertThat(numerico.compareTo(new NumericoInteger(Numerico.builder(10)))).isEqualTo(0);
-		assertThat(numerico.compareTo(new NumericoInteger(Numerico.builder(15)))).isEqualTo(-1);
+		assertThat(DEZ.compareTo(new NumericoInteger(5))).isEqualTo(1);
+		assertThat(DEZ.compareTo(new NumericoInteger(10))).isEqualTo(0);
+		assertThat(DEZ.compareTo(new NumericoInteger(15))).isEqualTo(-1);
 	}
 
 	@Test
 	public void format() {
-		assertThat(String.format("%s", new NumericoInteger(dez))).isEqualTo("10");
+		assertThat(String.format("%s", DEZ)).isEqualTo("10");
 	}
 
 	@Test
 	public void content() {
-		assertThat(new NumericoInteger(dez).content(null)).isEqualTo("10");
+		assertThat(DEZ.content(null)).isEqualTo("10");
 	}
 
 	@Test
 	public void isZero() {
-		assertThat(new NumericoInteger(Numerico.builder(0)).isZero()).isTrue();
-		assertThat(new NumericoInteger(dez).isZero()).isFalse();
+		assertThat(new NumericoInteger(0).isZero()).isTrue();
+		assertThat(DEZ.isZero()).isFalse();
 	}
 
 	@Test
 	public void isMaiorOuIgualZero() {
-		assertThat(new NumericoInteger(Numerico.builder(-10)).isMaiorOuIgualZero()).isFalse();
-		assertThat(new NumericoInteger(Numerico.builder(0)).isMaiorOuIgualZero()).isTrue();
-		assertThat(new NumericoInteger(dez).isMaiorOuIgualZero()).isTrue();
+		assertThat(new NumericoInteger(-10).isMaiorOuIgualZero()).isFalse();
+		assertThat(new NumericoInteger(0).isMaiorOuIgualZero()).isTrue();
+		assertThat(DEZ.isMaiorOuIgualZero()).isTrue();
 	}
 
 	@Test
 	public void isMaiorQue() {
-		NumericoInteger numerico = new NumericoInteger(dez);
-		assertThat(numerico.isMaiorQue(new NumericoInteger(Numerico.builder(5)))).isTrue();
-		assertThat(numerico.isMaiorQue(new NumericoInteger(dez))).isFalse();
-		assertThat(numerico.isMaiorQue(new NumericoInteger(Numerico.builder(15)))).isFalse();
+		assertThat(DEZ.isMaiorQue(new NumericoInteger(5))).isTrue();
+		assertThat(DEZ.isMaiorQue(DEZ)).isFalse();
+		assertThat(DEZ.isMaiorQue(new NumericoInteger(15))).isFalse();
 	}
 
 	@Test
 	public void isMaiorOuIgualQue() {
-		NumericoInteger numerico = new NumericoInteger(dez);
-		assertThat(numerico.isMaiorOuIgualQue(new NumericoInteger(Numerico.builder(5)))).isTrue();
-		assertThat(numerico.isMaiorOuIgualQue(new NumericoInteger(dez))).isTrue();
-		assertThat(numerico.isMaiorOuIgualQue(new NumericoInteger(Numerico.builder(15)))).isFalse();
+		assertThat(DEZ.isMaiorOuIgualQue(new NumericoInteger(5))).isTrue();
+		assertThat(DEZ.isMaiorOuIgualQue(DEZ)).isTrue();
+		assertThat(DEZ.isMaiorOuIgualQue(new NumericoInteger(15))).isFalse();
 	}
 
 	@Test
 	public void isPositivo() {
-		assertThat(new NumericoInteger(Numerico.builder(-5)).isPositivo()).isFalse();
-		assertThat(new NumericoInteger(Numerico.builder(0)).isPositivo()).isFalse();
-		assertThat(new NumericoInteger(dez).isPositivo()).isTrue();
+		assertThat(new NumericoInteger(-5).isPositivo()).isFalse();
+		assertThat(new NumericoInteger(0).isPositivo()).isFalse();
+		assertThat(DEZ.isPositivo()).isTrue();
 	}
 
 	@Test
 	public void isNegativo() {
-		assertThat(new NumericoInteger(Numerico.builder(-5)).isNegativo()).isTrue();
-		assertThat(new NumericoInteger(Numerico.builder(0)).isNegativo()).isFalse();
-		assertThat(new NumericoInteger(dez).isNegativo()).isFalse();
+		assertThat(new NumericoInteger(-5).isNegativo()).isTrue();
+		assertThat(new NumericoInteger(0).isNegativo()).isFalse();
+		assertThat(DEZ.isNegativo()).isFalse();
 	}
 
 	@Test
 	public void getValue() {
-		assertThat(new NumericoInteger(dez).getValue()).isEqualTo(10);
-		assertThat(new NumericoInteger(dez).byteValue()).isEqualTo((byte) 10);
-		assertThat(new NumericoInteger(dez).shortValue()).isEqualTo((short) 10);
-		assertThat(new NumericoInteger(dez).intValue()).isEqualTo(10);
-		assertThat(new NumericoInteger(dez).longValue()).isEqualTo(10L);
-		assertThat(new NumericoInteger(dez).floatValue()).isEqualTo(10.0f);
-		assertThat(new NumericoInteger(dez).doubleValue()).isEqualTo(10.0d);
+		assertThat(DEZ.getValue()).isEqualTo(10);
+		assertThat(DEZ.byteValue()).isEqualTo((byte) 10);
+		assertThat(DEZ.shortValue()).isEqualTo((short) 10);
+		assertThat(DEZ.intValue()).isEqualTo(10);
+		assertThat(DEZ.longValue()).isEqualTo(10L);
+		assertThat(DEZ.floatValue()).isEqualTo(10.0f);
+		assertThat(DEZ.doubleValue()).isEqualTo(10.0d);
 	}
 
 	private static class NumericoInteger extends Numerico<NumericoInteger, Integer> {
 
-		private NumericoInteger(Builder builder) {
-			super(builder);
+		private NumericoInteger(int value) {
+			super(value);
 		}
 
 		@Override

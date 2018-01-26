@@ -6,33 +6,33 @@ import org.testng.annotations.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class NomeTest {
+public class NameeTest {
 
 	@Test
 	public void lenght() {
-		assertThat(Nome.MAX_LENGTH).isEqualTo(60);
+		assertThat(Namee.MAX_LENGTH).isEqualTo(60);
 	}
 
 	@Test(expectedExceptions = NullPointerException.class)
 	public void ofNull() {
-		Nome.of(null);
+		Namee.of(null);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void ofBlank() {
-		Nome.of("");
+		Namee.of("");
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void regex() {
-		Nome.of("¹²³");
+		Namee.of("¹²³");
 	}
 
 	@Test
 	public void equals() {
-		ContractTester.test(Nome.of(" Ricardo  Bespalhuk "),
-				ImmutableList.builder().add(Nome.of("Ricardo Bespalhuk")).build(),
-				ImmutableList.builder().add(Nome.of("Bespalhuk")).build());
+		ContractTester.test(Namee.of(" Ricardo  Bespalhuk "),
+				ImmutableList.builder().add(Namee.of("Ricardo Bespalhuk")).build(),
+				ImmutableList.builder().add(Namee.of("Bespalhuk")).build());
 	}
 
 }
