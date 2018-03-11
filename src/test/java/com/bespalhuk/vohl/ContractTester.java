@@ -8,6 +8,7 @@ public class ContractTester {
 
 	public static void test(Object value, List<Object> equals, List<Object> notEquals) {
 		Check.notNull(value);
+		Check.argument(!(value instanceof String), "No need to test String instances");
 		Check.notNull(equals);
 		Check.notNull(notEquals);
 		equals(value, equals, notEquals);

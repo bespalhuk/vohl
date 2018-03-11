@@ -2,16 +2,21 @@ package com.bespalhuk.vohl.numerico;
 
 import com.bespalhuk.vohl.Check;
 
-public class NumericoValidator<T extends Number & Comparable<T>> {
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
-	private final T value;
+public class BigNumericoValidator {
 
-	public NumericoValidator(T value) {
+	private final BigDecimal value;
+
+	public BigNumericoValidator(Object value, int scale, RoundingMode roundingMode) {
 		Check.notNull(value);
-		this.value = value;
+		Check.notNull(scale);
+		Check.notNull(roundingMode);
+		this.value = new BigDecimal(Numeral.numerify(value.toString())).setScale(scale, roundingMode);
 	}
 
-	public NumericoValidator<T> between(T min, T max) {
+	public BigNumericoValidator between(BigDecimal min, BigDecimal max) {
 		Check.notNull(min);
 		Check.notNull(max);
 		Check.argument(min.compareTo(max) <= 0,
@@ -21,31 +26,35 @@ public class NumericoValidator<T extends Number & Comparable<T>> {
 		return this;
 	}
 
-	public NumericoValidator<T> min(T min) {
+	public BigNumericoValidator min(BigDecimal min) {
 		Check.notNull(min);
 		Check.argument(value.compareTo(min) >= 0,
 				String.format("Deve ter valor mínimo %s. [%s]", min, value));
 		return this;
 	}
 
-	public NumericoValidator<T> max(T max) {
+	public BigNumericoValidator max(BigDecimal max) {
 		Check.notNull(max);
 		Check.argument(value.compareTo(max) <= 0,
 				String.format("Deve ter valor máximo %s. [%s]", max, value));
 		return this;
 	}
 
-	public NumericoValidator<T> minLength(int min) {
+	public BigNumericoValidator minLength(int min) {
 		Check.argument(value.toString().length() >= min,
 				String.format("Deve ter no mínimo %d caracteres. [%s]", min, value));
 		return this;
 	}
 
-	public NumericoValidator<T> maxLength(int max) {
+	public BigNumericoValidator maxLength(int max) {
 		Check.notNull(max);
 		Check.argument(value.toString().length() <= max,
 				String.format("Deve ter no máximo %d caracteres. [%s]", max, value));
 		return this;
+	}
+
+	public BigDecimal getValue() {
+		return value;
 	}
 
 }

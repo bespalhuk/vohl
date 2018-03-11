@@ -11,6 +11,8 @@ public class UnseparateTest {
 		assertThat(new Unseparate().modify(" Bespalhuk ")).isEqualTo("Bespalhuk");
 		assertThat(new Unseparate().modify(",Bespalhuk,")).isEqualTo("Bespalhuk");
 		assertThat(new Unseparate().modify(".Bespalhuk.")).isEqualTo("Bespalhuk");
+		assertThat(new Unseparate().modify("'Bespalhuk'")).isEqualTo("Bespalhuk");
+		assertThat(new Unseparate().modify("\"Bespalhuk\"")).isEqualTo("Bespalhuk");
 		assertThat(new Unseparate().modify("+Bespalhuk+")).isEqualTo("Bespalhuk");
 		assertThat(new Unseparate().modify("-Bespalhuk-")).isEqualTo("Bespalhuk");
 		assertThat(new Unseparate().modify("*Bespalhuk*")).isEqualTo("Bespalhuk");

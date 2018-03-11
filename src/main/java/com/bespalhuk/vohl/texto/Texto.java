@@ -4,16 +4,15 @@ import com.bespalhuk.vohl.Check;
 import com.bespalhuk.vohl.texto.modify.Modifier;
 import com.bespalhuk.vohl.texto.modify.Modify;
 import com.google.common.collect.ComparisonChain;
+import com.google.common.collect.MoreCollectors;
 import org.joox.Content;
 import org.joox.Context;
 
 import java.io.Serializable;
-import java.util.Formattable;
-import java.util.Formatter;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public abstract class Texto<T extends Texto<T>> implements Comparable<T>, Formattable, Content, Serializable {
 
@@ -109,6 +108,18 @@ public abstract class Texto<T extends Texto<T>> implements Comparable<T>, Format
 			return this;
 		}
 
+		public Builder matches(Pattern pattern) {
+			Check.notNull(pattern);
+			Check.argument(pattern.matcher(value).find(), Check.Messages.DIDNT_MATCH);
+			return this;
+		}
+
+		public Builder matchesAny(String... regexs) {
+			Check.notNull(regexs);
+			matchesAny(Arrays.stream(regexs).map(Pattern::compile).collect(Collectors.toList()));
+			return this;
+		}
+
 		public Builder matchesAny(List<Pattern> patterns) {
 			Check.notNull(patterns);
 			boolean anyMatch = patterns.stream().map(p -> p.matcher(value)).anyMatch(Matcher::find);
@@ -116,9 +127,8 @@ public abstract class Texto<T extends Texto<T>> implements Comparable<T>, Format
 			return this;
 		}
 
-		public Builder notBlank() {
-			Check.notBlank(value);
-			return this;
+		public String getValue() {
+			return value;
 		}
 
 		private String build() {

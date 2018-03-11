@@ -12,6 +12,7 @@ public class Unseparate implements Modifier {
 		Check.notNull(value);
 		return value.replaceAll(" ", "")
 				.replaceAll(",", "").replaceAll("\\.", "")
+				.replaceAll("'", "").replaceAll("\"", "")
 				.replaceAll("\\+", "").replaceAll("-", "")
 				.replaceAll("\\*", "")
 				.replaceAll("/", "").replaceAll("\\\\", "")

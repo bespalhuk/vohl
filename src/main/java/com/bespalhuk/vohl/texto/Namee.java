@@ -9,7 +9,7 @@ public class Namee extends Texto<Namee> {
 	public static final String REGEX =
 			"^[a-zA-ZàáâäąòóôöèéëêęìíïîçćùúûüÿńñźżśæœßłÀÁÂÄĄÒÓÔÖÈÉËÊĘÌÍÏÎÇĆÙÚÛÜŸŃÑŹŻŚÆŒẞŁ ]*$";
 
-	private Namee(Builder builder) {
+	protected Namee(Builder builder) {
 		super(builder);
 	}
 
@@ -17,17 +17,13 @@ public class Namee extends Texto<Namee> {
 		Builder builder = Texto.builder(value)
 				.matches(REGEX)
 				.modifiers(Modifier.trim(), Modifier.singleSpaces())
-				.between(1, MAX_LENGTH)
-				.notBlank();
+				.between(1, MAX_LENGTH);
 		return new Namee(builder);
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj instanceof Namee) {
-			return super.equals(obj);
-		}
-		return false;
+		return obj instanceof Namee && super.equals(obj);
 	}
 
 	@Override

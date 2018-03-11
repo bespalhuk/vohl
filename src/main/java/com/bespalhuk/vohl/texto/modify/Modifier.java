@@ -1,17 +1,15 @@
 package com.bespalhuk.vohl.texto.modify;
 
-public interface Modifier {
+import com.bespalhuk.vohl.Check;
 
-	static Modifier normalize() {
-		return new Normalize();
-	}
+public interface Modifier {
 
 	static Modifier lowerCase() {
 		return new LowerCase();
 	}
 
-	static Modifier upperCase() {
-		return new UpperCase();
+	static Modifier normalize() {
+		return new Normalize();
 	}
 
 	static Modifier singleSpaces() {
@@ -22,8 +20,23 @@ public interface Modifier {
 		return new Trim();
 	}
 
+	static Modifier truncate(int i) {
+		Check.notNull(i);
+		return new Truncate(i);
+	}
+
+	static Modifier truncate(int i, String replacer) {
+		Check.notNull(i);
+		Check.notNull(replacer);
+		return new Truncate(i, replacer);
+	}
+
 	static Modifier unseparate() {
 		return new Unseparate();
+	}
+
+	static Modifier upperCase() {
+		return new UpperCase();
 	}
 
 	String modify(String value);

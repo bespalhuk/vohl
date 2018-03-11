@@ -65,33 +65,53 @@ public class TextoTest {
 	}
 
 	@Test
-	public void validMatches() {
+	public void validStringMatches() {
 		TEXTO.matches("\\w+");
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void invalidMatches() {
+	public void invalidStringMatches() {
 		TEXTO.matches("\\W+");
 	}
 
 	@Test
-	public void validMatchesAny() {
+	public void validPaternMatches() {
+		TEXTO.matches(Pattern.compile("\\w+"));
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void invalidPaternMatches() {
+		TEXTO.matches(Pattern.compile("\\W+"));
+	}
+
+	@Test
+	public void validStringMatchesAny() {
+		TEXTO.matchesAny("\\w+", "\\W+");
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void invalidStringMatchesAny() {
+		TEXTO.matchesAny("\\s+", "\\W+");
+	}
+
+	@Test
+	public void validPatternMatchesAny() {
 		TEXTO.matchesAny(ImmutableList.of(Pattern.compile("\\w+"), Pattern.compile("\\W+")));
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void invalidMatchesAny() {
+	public void invalidPatternMatchesAny() {
 		TEXTO.matchesAny(ImmutableList.of(Pattern.compile("\\s+"), Pattern.compile("\\W+")));
 	}
 
 	@Test
-	public void validNotBlank() {
-		TEXTO.notBlank();
-	}
-
-	@Test(expectedExceptions = IllegalArgumentException.class)
-	public void invalidNotBlank() {
-		Texto.builder("").notBlank();
+	public void getValue() {
+		Texto.Builder texto = Texto.builder("Bespalhuk");
+		assertThat(texto.getValue()).isEqualTo("Bespalhuk");
+		texto.modifiers(Modifier.lowerCase());
+		assertThat(texto.getValue()).isEqualTo("bespalhuk");
+		texto.modifiers(Modifier.upperCase());
+		assertThat(texto.getValue()).isEqualTo("BESPALHUK");
 	}
 
 	@Test

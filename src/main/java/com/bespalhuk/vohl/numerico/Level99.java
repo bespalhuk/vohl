@@ -1,6 +1,6 @@
 package com.bespalhuk.vohl.numerico;
 
-public class Level99 extends Numerico<Level99, Integer> {
+public class Level99 extends NumericoInteger<Level99> {
 
 	private static final int MIN = 1;
 
@@ -11,16 +11,13 @@ public class Level99 extends Numerico<Level99, Integer> {
 	}
 
 	public static Level99 of(Integer value) {
-		new NumericoValidator<>(value).min(MIN).max(MAX);
+		new NumericoValidator<>(value).between(MIN, MAX);
 		return new Level99(value);
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj instanceof Level99) {
-			return super.equals(obj);
-		}
-		return false;
+		return obj instanceof Level99 && super.equals(obj);
 	}
 
 	@Override
