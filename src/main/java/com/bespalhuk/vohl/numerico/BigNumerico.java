@@ -28,7 +28,7 @@ public abstract class BigNumerico<T extends BigNumerico<T>> implements Numeral<T
 
 	@Override
 	public int hashCode() {
-		return super.hashCode();
+		return Objects.hash(value);
 	}
 
 	@Override
@@ -38,7 +38,7 @@ public abstract class BigNumerico<T extends BigNumerico<T>> implements Numeral<T
 
 	@Override
 	public int compareTo(T o) {
-		return ComparisonChain.start().compare(this.value, o).result();
+		return ComparisonChain.start().compare(this.value, o.value).result();
 	}
 
 	@Override
@@ -93,8 +93,12 @@ public abstract class BigNumerico<T extends BigNumerico<T>> implements Numeral<T
 		return value;
 	}
 
-	public BigDecimal truncate(int decimals) {
-		return value.setScale(decimals, RoundingMode.FLOOR);
+	public BigDecimal truncate(int scale) {
+		return value.setScale(scale, RoundingMode.FLOOR);
+	}
+
+	public BigDecimal round(int scale) {
+		return value.setScale(scale, getRoundingMode());
 	}
 
 	public abstract RoundingMode getRoundingMode();

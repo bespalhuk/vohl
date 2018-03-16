@@ -5,17 +5,17 @@ import java.math.RoundingMode;
 
 public class PowerLevel extends BigNumerico<PowerLevel> {
 
-	public static final int PRECISION = 4;
+	public static final int PRECISION = 6;
 
 	public static final int SCALE = 2;
 
 	public static final RoundingMode ROUNDING_MODE = RoundingMode.HALF_EVEN;
 
-	private static final BigDecimal MIN_VALUE = new BigDecimal("8000.00");
+	private static final BigDecimal MIN_VALUE = new BigDecimal("10.00");
 
 	public static final PowerLevel MIN = new PowerLevel(MIN_VALUE);
 
-	private static final BigDecimal MAX_VALUE = new BigDecimal("8000.00");
+	private static final BigDecimal MAX_VALUE = new BigDecimal("9999.99");
 
 	public static final PowerLevel MAX = new PowerLevel(MAX_VALUE);
 
@@ -34,6 +34,16 @@ public class PowerLevel extends BigNumerico<PowerLevel> {
 			return PowerLevel.MAX;
 		}
 		return new PowerLevel(validated);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return obj instanceof PowerLevel && super.equals(obj);
+	}
+
+	@Override
+	public int hashCode() {
+		return super.hashCode();
 	}
 
 	@Override
@@ -73,7 +83,7 @@ public class PowerLevel extends BigNumerico<PowerLevel> {
 
 	@Override
 	public PowerLevel toFloor() {
-		return new PowerLevel(value.setScale(0, RoundingMode.FLOOR));
+		return PowerLevel.of(value.setScale(0, RoundingMode.FLOOR));
 	}
 
 }

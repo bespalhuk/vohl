@@ -38,7 +38,7 @@ public abstract class NumericoLong<T extends NumericoLong<T>> implements Numeral
 
 	@Override
 	public int compareTo(T o) {
-		return ComparisonChain.start().compare(this.value, o).result();
+		return ComparisonChain.start().compare(this.value, o.value).result();
 	}
 
 	@Override

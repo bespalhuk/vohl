@@ -41,15 +41,18 @@ public class BigNumericoValidator {
 	}
 
 	public BigNumericoValidator minLength(int min) {
-		Check.argument(value.toString().length() >= min,
-				String.format("Deve ter no mínimo %d caracteres. [%s]", min, value));
+		Check.notNull(min);
+		int precision = value.precision();
+		Check.argument(precision >= min,
+				String.format("Deve ter no mínimo %d de precision. [%d]", min, precision));
 		return this;
 	}
 
-	public BigNumericoValidator maxLength(int max) {
-		Check.notNull(max);
-		Check.argument(value.toString().length() <= max,
-				String.format("Deve ter no máximo %d caracteres. [%s]", max, value));
+	public BigNumericoValidator maxLength(int min) {
+		Check.notNull(min);
+		int precision = value.precision();
+		Check.argument(precision <= min,
+				String.format("Deve ter no máximo %d de precision. [%d]", min, precision));
 		return this;
 	}
 

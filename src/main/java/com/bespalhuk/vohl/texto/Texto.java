@@ -10,6 +10,7 @@ import org.joox.Context;
 
 import java.io.Serializable;
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -124,6 +125,14 @@ public abstract class Texto<T extends Texto<T>> implements Comparable<T>, Format
 			Check.notNull(patterns);
 			boolean anyMatch = patterns.stream().map(p -> p.matcher(value)).anyMatch(Matcher::find);
 			Check.argument(anyMatch, Check.Messages.DIDNT_MATCH);
+			return this;
+		}
+
+		public Builder validate(List<Consumer<String>> consumers) {
+			Check.notNull(consumers);
+			for (Consumer<String> consumer : consumers) {
+				consumer.accept(value);
+			}
 			return this;
 		}
 

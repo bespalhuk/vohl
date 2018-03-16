@@ -1,5 +1,6 @@
 package com.bespalhuk.vohl.texto;
 
+import com.bespalhuk.vohl.Check;
 import com.bespalhuk.vohl.ContractTester;
 import com.bespalhuk.vohl.texto.modify.Modifier;
 import com.google.common.collect.ImmutableList;
@@ -105,6 +106,16 @@ public class TextoTest {
 	}
 
 	@Test
+	public void validValidator() {
+		TEXTO.validate(ImmutableList.of(s -> Check.argument(s.matches("\\w+"))));
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void invalidValidator() {
+		TEXTO.validate(ImmutableList.of(s -> Check.argument(s.matches("\\s+"))));
+	}
+
+	@Test
 	public void getValue() {
 		Texto.Builder texto = Texto.builder("Bespalhuk");
 		assertThat(texto.getValue()).isEqualTo("Bespalhuk");
@@ -122,7 +133,7 @@ public class TextoTest {
 	}
 
 	@Test
-	public void string() {
+	public void tostring() {
 		assertThat(new Texto1(TEXTO).toString()).isEqualTo("Bespalhuk");
 	}
 

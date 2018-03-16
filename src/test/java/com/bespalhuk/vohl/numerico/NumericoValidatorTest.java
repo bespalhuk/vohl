@@ -2,85 +2,68 @@ package com.bespalhuk.vohl.numerico;
 
 import org.testng.annotations.Test;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
+public class NumericoValidatorTest {
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-public class BigNumericoValidatorTest {
-
-	private static final BigDecimal CINCO = new BigDecimal(5);
-
-	private static final BigDecimal QUINZE = new BigDecimal(15);
-
-	private static final BigDecimal VINTE = new BigDecimal(20);
-
-	private static final BigNumericoValidator DEZ_E_MEIO
-			= new BigNumericoValidator(10.5, 3, RoundingMode.HALF_EVEN);
+	private static final NumericoValidator<Integer> DEZ = new NumericoValidator<>(10);
 
 	@Test
 	public void validBetween() {
-		DEZ_E_MEIO.between(CINCO, QUINZE);
+		DEZ.between(5, 15);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void invalidBetween() {
-		DEZ_E_MEIO.between(QUINZE, CINCO);
+		DEZ.between(15, 5);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void invalidMinBetween() {
-		DEZ_E_MEIO.between(QUINZE, VINTE);
+		DEZ.between(15, 20);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void invalidMaxBetween() {
-		DEZ_E_MEIO.between(BigDecimal.ZERO, CINCO);
+		DEZ.between(0, 5);
 	}
 
 	@Test
 	public void validMin() {
-		DEZ_E_MEIO.min(CINCO);
+		DEZ.min(5);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void invalidMin() {
-		DEZ_E_MEIO.min(QUINZE);
+		DEZ.min(15);
 	}
 
 	@Test
 	public void validMax() {
-		DEZ_E_MEIO.max(QUINZE);
+		DEZ.max(15);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void invalidMax() {
-		DEZ_E_MEIO.max(CINCO);
+		DEZ.max(5);
 	}
 
 	@Test
 	public void validMinLength() {
-		DEZ_E_MEIO.minLength(4);
+		DEZ.minLength(2);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void invalidMinLength() {
-		DEZ_E_MEIO.minLength(6);
+		DEZ.minLength(3);
 	}
 
 	@Test
 	public void validMaxLength() {
-		DEZ_E_MEIO.maxLength(6);
+		DEZ.maxLength(2);
 	}
 
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void invalidMaxLength() {
-		DEZ_E_MEIO.maxLength(4);
-	}
-
-	@Test
-	public void getValue() {
-		assertThat(DEZ_E_MEIO.getValue()).isEqualTo(new BigDecimal("10.500"));
+		DEZ.maxLength(1);
 	}
 
 }
